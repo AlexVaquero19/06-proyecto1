@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
+import { SaveOnStorage } from '../helpers/SaveOnStorage';
 
-function Create () {
-  const titleComponent= 'Añadir Película';
+function Create ({setListState}) {
+  const titleComponent = 'Añadir Película';
 
   const [film, setFilm] = useState({
     title: '',
@@ -26,6 +27,15 @@ function Create () {
     };
 
     setFilm(filmData);
+
+    setListState(elements => {
+      if(Array.isArray(elements)){
+        return [...elements, filmData];
+      }
+    });
+
+    //Save on local storage
+    SaveOnStorage('films', filmData);
   }
 
   return (

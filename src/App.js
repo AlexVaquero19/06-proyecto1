@@ -1,8 +1,11 @@
+import { useState } from 'react'
 import Create from "./components/Create";
 import Listado from "./components/Listado";
 import Search from "./components/Search";
 
 function App() {
+  const [listState, setListState] = useState([]);
+
   return (
     <div className="layout">
       {/*Header*/}
@@ -27,14 +30,14 @@ function App() {
       {/*Main*/}
       <section className="content">
         {/*Here Films*/}
-        <Listado />
-        <Listado />
-        <Listado />
+        <Listado 
+          listState={listState}
+          setListState={setListState}/>
       </section>
 
       <aside className="lateral">
         <Search />
-        <Create />
+        <Create setListState={setListState}/>
       </aside>
 
       {/*Footer*/}

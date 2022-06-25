@@ -1,16 +1,35 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { GetFromStorage } from '../helpers/GetFromStorage'
 
-function Listado () {
+function Listado ({listState, setListState}) {
+  //const [listState, setListState] = useState([]);
+
+  useEffect(() => {
+    setListState(GetFromStorage('films'));
+  }, []);
+
+  const deleteFilm = (id) => {
+    let films = GetFromStorage('films');
+
+    let newListFilms = films.filter(film => film.id !== parseInt(id));
+    setListState(newListFilms);
+    localStorage.setItem('films', JSON.stringify(newListFilms));
+  }
+
   return (
     <>
       {/*Here Films*/}
-      <article className="film-item">
-        <h3 className="title">Web Development</h3>
-        <p className="description">portfolio.es</p>
+      {listState != null && listState.length > 0 ? listState.map(film => (
+        <div key={film.id} className="film-item">
+          <h3 className="title">{film.title}</h3>
+          <p className="description">{film.description}</p>
 
-        <button className="edit">Editar</button>
-        <button className="delete">Eliminar</button>
-      </article>
+          <button className="edit">Editar</button>
+          <button onClick={() => deleteFilm(film.id)} className="delete">Eliminar</button>
+        </div>
+      )) : 
+         <p className='emptyArraymsg'>No hay peliculas</p>
+      }
     </>
   )
 }
